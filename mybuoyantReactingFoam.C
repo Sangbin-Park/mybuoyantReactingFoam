@@ -49,8 +49,8 @@ int main(int argc, char *argv[])
             Foam::fvm::ddt(U) + Foam::fvm::div(phi, U)
         );
 
-        UEqn().relax();
-        Foam::solve(UEqn() == -Foam::fvc::grad(NH3));
+        UEqn.ref().relax();
+        Foam::solve(UEqn == -Foam::fvc::grad(NH3));
 
         // Solve ammonia diffusion equation
         Foam::solve(Foam::fvm::ddt(NH3) + Foam::fvm::div(phi, NH3) - Foam::fvm::laplacian(Foam::dimensionedScalar("D", Foam::dimViscosity, 1e-5), NH3));
