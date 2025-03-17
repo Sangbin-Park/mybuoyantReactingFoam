@@ -1,4 +1,4 @@
-/*---------------------------------------------------------------------------*\\
+/*---------------------------------------------------------------------------*\
   Application
     ammoniaDiffusionFoam
 
@@ -33,6 +33,12 @@ int main(int argc, char *argv[])
         mesh
     );
 
+    // Surface flux field
+    Foam::surfaceScalarField phi(
+        Foam::IOobject("phi", runTime.timeName(), mesh, Foam::IOobject::MUST_READ, Foam::IOobject::AUTO_WRITE),
+        mesh
+    );
+
     // Time loop
     while (runTime.run())
     {
@@ -47,7 +53,7 @@ int main(int argc, char *argv[])
         Foam::solve(UEqn() == -Foam::fvc::grad(NH3));
 
         // Solve ammonia diffusion equation
-        Foam::solve(Foam::fvm::ddt(NH3) + Foam::fvm::div(phi, NH3) - Foam::fvm::laplacian(1e-5, NH3));
+        Foam::solve(Foam::fvm::ddt(NH3) + Foam::fvm::div(phi, NH3) - Foam::fvm::laplacian(Foam::dimensionedScalar("D", Foam::dimViscosity, 1e-5), NH3));
 
         runTime.write(); // Write results
     }
