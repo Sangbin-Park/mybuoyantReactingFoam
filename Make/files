@@ -1,0 +1,3 @@
+mybuoyantReactingFoam.C
+
+EXE = $(FOAM_APPBIN)/mybuoyantReactingFoam
